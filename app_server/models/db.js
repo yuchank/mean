@@ -25,3 +25,5 @@ var shutdown = (msg, callback) => {
     callback();
   });
 };
+
+require('./locations');
