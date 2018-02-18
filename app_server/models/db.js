@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
 
 var dbURI = 'mongodb://localhost/Loc8r';
+if (process.env.NODE_ENV === 'production') {
+  dbURI = '';
+}
 mongoose.connect(dbURI);
 
 if (process.platform === 'win32') {
