@@ -6,12 +6,31 @@ var sendJsonResponse = (res, status, content) => {
   res.json(content);
 };
 
+var theEarth = (_ => {
+  var earthRadius = 6371; // km, miles is 3959
+
+  var getDistanceFromRads = (rads) => {
+    return parseFloat(rads * earthRadius);
+  };
+
+  var getRadsFromDistance = (distance) => {
+    return parseFloat(distance / earthRadius);
+  };
+
+  return {
+    getDistanceFromRads: getDistanceFromRads,
+    getRadsFromDistance: getRadsFromDistance
+  };
+})();
+
 module.exports.locationsListByDistance = function(req, res, next) {
   sendJsonResponse(res, 200, {"status": "success"});
 };
+
 module.exports.locationsCreate = function(req, res, next) {
   sendJsonResponse(res, 200, {"status": "success"});
 };
+
 module.exports.locationsReadOne = function(req, res, next) {
   if (req.params && req.params.locationid) {
     Loc.findById(req.params.locationid).exec((err, location) => {
@@ -34,9 +53,11 @@ module.exports.locationsReadOne = function(req, res, next) {
     });
   }
 };
+
 module.exports.locationsUpdateOne = function(req, res, next) {
   sendJsonResponse(res, 200, {"status": "success"});
 };
+
 module.exports.locationsDeleteOne = function(req, res, next) {
   sendJsonResponse(res, 200, {"status": "success"});
 };

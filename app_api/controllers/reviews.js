@@ -9,6 +9,7 @@ var sendJsonResponse = (res, status, content) => {
 module.exports.reviewsCreate = function(req, res, next) {
 
 };
+
 module.exports.reviewsReadOne = function(req, res, next) {
   if (req.param && req.params.locationid && req.params.reviewid) {
     Loc.findById(req.params.locationid).select('name reviews').exec((err, location) => {
@@ -53,9 +54,11 @@ module.exports.reviewsReadOne = function(req, res, next) {
     });
   }
 };
+
 module.exports.reviewsUpdateOne = function(req, res, next) {
 
 };
+
 module.exports.reviewsDeleteOne = function(req, res, next) {
 
 };

@@ -27,6 +27,7 @@ module.exports.homelist = function(req, res, next) {
     }]
   });
 };
+
 /* GET 'Location info' page */
 module.exports.locationInfo = function(req, res, next) {
   res.render('location-info', {
@@ -71,6 +72,7 @@ module.exports.locationInfo = function(req, res, next) {
     }
   });
 };
+
 /* GET 'Add review' page */
 module.exports.addReview = function(req, res, next) {
   res.render('location-review-form', { 
