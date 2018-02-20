@@ -24,6 +24,49 @@ var theEarth = (_ => {
 })();
 
 module.exports.locationsListByDistance = function(req, res, next) {
+  
+  // Loc.find({ rating: 3 }).then(res => {
+  //   console.log(res);
+  // });
+  
+  var lng = parseFloat(req.query.lng);
+  var lat = parseFloat(req.query.lat);
+
+  var point = {
+    type: "Point",
+    coordinates: [lng, lat]
+  };
+
+  // callback type
+  Loc.aggregate([
+    {
+        $geoNear: {
+            near: point,
+            distanceField: "dist.calculated",
+            spherical: true,
+            maxDistance: theEarth.getRadsFromDistance(20),
+            num: 10         
+        }
+    }
+  ], (err, results) => {
+    console.log(results);
+  });
+
+  // Promise type
+  // Loc.aggregate([
+  //   {
+  //       $geoNear: {
+  //           near: point,
+  //           distanceField: "dist.calculated",
+  //           spherical: true,
+  //           maxDistance: theEarth.getRadsFromDistance(20),
+  //           num: 10         
+  //       }
+  //   }
+  // ]).then((res) => {
+  //   console.log(res);
+  // });
+  
   sendJsonResponse(res, 200, {"status": "success"});
 };
 
