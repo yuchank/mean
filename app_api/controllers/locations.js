@@ -9,11 +9,11 @@ var sendJsonResponse = (res, status, content) => {
 var theEarth = (_ => {
   var earthRadius = 6371; // km, miles is 3959
 
-  var getDistanceFromRads = (rads) => {
+  var getDistanceFromRads = rads => {
     return parseFloat(rads * earthRadius);
   };
 
-  var getRadsFromDistance = (distance) => {
+  var getRadsFromDistance = distance => {
     return parseFloat(distance / earthRadius);
   };
 
@@ -32,6 +32,13 @@ module.exports.locationsListByDistance = function(req, res, next) {
   var lng = parseFloat(req.query.lng);
   var lat = parseFloat(req.query.lat);
 
+  if (!lng || !lat) {
+    sendJsonResponse(res, 404, {
+      'message': 'lng and lat query parameters are required'
+    });
+    return;
+  }
+
   var point = {
     type: "Point",
     coordinates: [lng, lat]
@@ -42,14 +49,30 @@ module.exports.locationsListByDistance = function(req, res, next) {
     {
         $geoNear: {
             near: point,
-            distanceField: "dist.calculated",
+            distanceField: 'dist',
             spherical: true,
             maxDistance: theEarth.getRadsFromDistance(20),
             num: 10         
         }
     }
   ], (err, results) => {
-    console.log(results);
+    var locations = [];
+    if (err) {
+      sendJsonResponse(res, 404, err);
+    }
+    else {
+      results.forEach(doc => {
+        locations.push({
+          distance: theEarth.getDistanceFromRads(doc.dist),
+          name: doc.name,
+          address: doc.address,
+          rating: doc.rating,
+          facilities: doc.facilities,
+          _id: doc._id
+        });
+      });
+      sendJsonResponse(res, 200, locations);
+    }
   });
 
   // Promise type
@@ -66,8 +89,6 @@ module.exports.locationsListByDistance = function(req, res, next) {
   // ]).then((res) => {
   //   console.log(res);
   // });
-  
-  sendJsonResponse(res, 200, {"status": "success"});
 };
 
 module.exports.locationsCreate = function(req, res, next) {
