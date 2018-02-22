@@ -1,5 +1,12 @@
-/* GET 'home' page */
-module.exports.homelist = function(req, res, next) {
+var request = require('request');
+var apiOptions = {
+  server: 'http://localhost:3000'
+};
+if (process.env.NODE_ENV === 'production') {
+  apiOptions.server = '';
+}
+
+var renderHomapage = (req, res, body) => {
   res.render('locations-list', { 
     title: 'Loc8r - find a place to work with wifi',
     pageHeader: {
@@ -26,6 +33,25 @@ module.exports.homelist = function(req, res, next) {
       distance: '250m'
     }]
   });
+};
+
+/* GET 'home' page */
+module.exports.homelist = function(req, res, next) {
+  var requestOptions, path;
+  path = '/api/locations';
+  requestOptions = {
+    url: apiOptions.server + path,
+    method: 'GET',
+    json: {},
+    qs: {
+      lng: -0.7992599,
+      lat: 51.378091,
+      maxDistance: 20
+    }
+  };
+  request(requestOptions, (err, response, body) => {
+    renderHomapage(req, res, body);
+  });  
 };
 
 /* GET 'Location info' page */

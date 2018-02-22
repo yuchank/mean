@@ -31,10 +31,11 @@ module.exports.locationsListByDistance = function(req, res, next) {
   
   var lng = parseFloat(req.query.lng);
   var lat = parseFloat(req.query.lat);
+  var maxDistance = parseFloat(req.query.maxDistance);
 
-  if (!lng || !lat) {
+  if ((!lng && lng !== 0) || (!lat && lat !== 0) || !maxDistance) {
     sendJsonResponse(res, 404, {
-      'message': 'lng and lat query parameters are required'
+      'message': 'lng, lat and maxDistance query parameters are all required'
     });
     return;
   }
@@ -51,7 +52,7 @@ module.exports.locationsListByDistance = function(req, res, next) {
             near: point,
             distanceField: 'dist',
             spherical: true,
-            maxDistance: theEarth.getRadsFromDistance(20),
+            maxDistance: theEarth.getRadsFromDistance(maxDistance),
             num: 10         
         }
     }
