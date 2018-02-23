@@ -7,6 +7,16 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 var renderHomapage = (req, res, responseBody) => {
+  var message;
+  if (!(responseBody instanceof Array)) {
+    message = 'API lookup error';
+    responseBody = [];
+  }
+  else {
+    if (!responseBody.length) {
+      message = 'No places found nearby';
+    }
+  }
   res.render('locations-list', { 
     title: 'Loc8r - find a place to work with wifi',
     pageHeader: {
@@ -14,7 +24,8 @@ var renderHomapage = (req, res, responseBody) => {
       strapline: 'Find places to work with wifi near you!'
     },
     sidebar: 'Looking for wifi and a seat? Loc8r helps you find places to work when out and about. Perhaps with coffee, cake or a pint? Let Loc8r help you find the place you\'re looking for.',
-    locations: responseBody    
+    locations: responseBody,
+    message: message
   });
 };
 
@@ -27,14 +38,35 @@ module.exports.homelist = function(req, res, next) {
     method: 'GET',
     json: {},
     qs: {
-      lng: -0.9630884,
+      lng: -0.96308841,
       lat: 51.451041,
       maxDistance: 20
     }
   };
+
   request(requestOptions, (err, response, body) => {
-    renderHomapage(req, res, body);
+    var i, data;
+    data = body;
+    if (response.statusCode === 200 && data.length) {
+      for (i = 0; i < data.length; i++) {
+        data[i].distance = _formatDistance(data[i].distance);
+      }
+    }
+    renderHomapage(req, res, data);
   });  
+};
+
+var _formatDistance = distance => {
+  var numDistance, unit;
+  if (distance > 1) {
+    numDistance = parseFloat(distance).toFixed(1);
+    unit = 'km';
+  }
+  else {
+    numDistance = parseInt(distance * 1000, 10);
+    unit = 'm';
+  }
+  return numDistance + unit;
 };
 
 /* GET 'Location info' page */
