@@ -65,7 +65,7 @@ var doSetAverageRating = location => {
 module.exports.reviewsCreate = function(req, res, next) {
   var locationid= req.params.locationid;
   if (locationid) {
-    Loc.findById(locationid).select(reviews).exec((err, location) => {
+    Loc.findById(locationid).select('reviews').exec((err, location) => {
       if (err) {
         sendJsonResponse(res, 400, err);
       } 

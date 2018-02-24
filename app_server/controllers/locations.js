@@ -98,8 +98,7 @@ var renderDetailPage = (req, res, locDetail) => {
   });
 }
 
-/* GET 'Location info' page */
-module.exports.locationInfo = function(req, res, next) {
+var getLocationInfo = (req, res, callback) => {
   var requestOptions, path;
   path = '/api/locations/' + req.params.locationid;
   requestOptions = {
@@ -114,7 +113,7 @@ module.exports.locationInfo = function(req, res, next) {
         lng: body.coords[0],
         lat: body.coords[1]
       };
-      renderDetailPage(req, res, data);
+      callback(req, res, data);
     }
     else {
       _showError(req, res, response.statusCode);
@@ -122,10 +121,49 @@ module.exports.locationInfo = function(req, res, next) {
   });
 };
 
-/* GET 'Add review' page */
-module.exports.addReview = function(req, res, next) {
-  res.render('location-review-form', { 
-    title: 'Review Starcups on Loc8r' ,
-    pageHeader: { title: 'Review Starcups' }
+/* GET 'Location info' page */
+module.exports.locationInfo = function(req, res, next) {
+  getLocationInfo(req, res, (req, res, responseData) => {
+    renderDetailPage(req, res, responseData);
   });
 };
+
+var renderReviewForm = (req, res, locDetail) => {
+  res.render('location-review-form', { 
+    title: 'Review' + locDetail.name + ' on Loc8r',
+    pageHeader: { title: 'Review' + locDetail.name }
+  });
+};
+
+/* GET 'Add review' page */
+module.exports.addReview = function(req, res, next) {
+  getLocationInfo(req, res, (req, res, responseBody) => {
+    renderReviewForm(req, res, responseBody);
+  });
+};
+
+/* POST 'do Add review' */
+module.exports.doAddReview = function(req, res, next) {
+  var requestOptions, path, locationid, postdata;
+  locationid = req.params.locationid;
+  path = '/api/locations/' + locationid + '/reviews';
+  postdata = {
+    author: req.body.name,
+    rating: parseInt(req.body.rating, 10),
+    reviewText: req.body.review
+  };
+  requestOptions = {
+    url: apiOptions.server + path,
+    method: 'POST',
+    json: postdata
+  };
+  request(requestOptions, (err, response, body) => {
+    if (response.statusCode === 201) {
+      res.redirect('/location/' + locationid);
+    }
+    else {
+      _showError(req, res, response.statusCode);
+    }
+  });
+};
+
