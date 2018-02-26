@@ -21,6 +21,7 @@ var doAddReview = (req, res, location) => {
     location.save((err, location) => {
       var thisReview;
       if (err) {
+        console.log(err);
         sendJsonResponse(res, 400, err);
       }
       else {
