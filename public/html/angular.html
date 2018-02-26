@@ -7,12 +7,17 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Angular binding test</title>
 </head>
-<body>
+<body ng-controller="myController">
   <input ng-model="myInput" kr-input/>
   <h1>Hello {{ myInput }}</h1>
   <script>
-      var application = angular.module('myApp', []);
-      application.directive('krInput', ['$parse', function($parse) {
+      // application = module > controller --($scope)--> model 
+      angular.module('myApp', []);
+      var myController = function($scope) {
+        $scope.myInput = 'world!';
+      };
+      angular.module('myApp').controller('myController', myController);
+      angular.module('myApp').directive('krInput', ['$parse', function($parse) {
         return {
           priority : 2,
           restrict : 'A',
