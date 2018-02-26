@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html ng-app="myApp" lang="en">
+<head>
+  <script src="/javascripts/angular.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Angular binding test</title>
+</head>
+<body>
+  <input ng-model="myInput" kr-input/>
+  <h1>Hello {{ myInput }}</h1>
+  <script>
+      var application = angular.module('myApp', []);
+      application.directive('krInput', ['$parse', function($parse) {
+        return {
+          priority : 2,
+          restrict : 'A',
+          compile : function(element) {
+            element.on('compositionstart', function(e) {
+              e.stopImmediatePropagation();
+            });
+          },
+        };
+      }]);
+  </script>
+</body>
+</html>
