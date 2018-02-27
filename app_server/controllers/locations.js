@@ -36,7 +36,7 @@ var renderHomapage = (req, res) => {
 
 /* GET 'home' page */
 module.exports.homelist = function(req, res, next) {
-  renderHomapage(req, res, data);
+  renderHomapage(req, res);
 };
 
 var _formatDistance = distance => {
