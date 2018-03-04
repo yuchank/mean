@@ -21,7 +21,7 @@ var formatDistance = function () {
     else {
       return '?';
     }
-  }
+  };
 };
 
 var locationListCtrl = function ($scope, loc8rData, geolocation) {
