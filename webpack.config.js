@@ -29,7 +29,7 @@ module.exports = {
   plugins: [
     new HtmlWebPackPlugin({
       template: './react/index.html',
-      filename: './index.html'
+      filename: './html/index.html'
     })
   ],
   devServer: {
