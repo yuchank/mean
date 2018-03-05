@@ -59,3 +59,7 @@ typings/
 
 # vscode
 .vscode/
+
+# Output
+dist/
+*.min.js
