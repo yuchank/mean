@@ -10,8 +10,8 @@ require('./app_api/models/db');
 var uglifyJs = require('uglify-js');
 var fs = require('fs');
 
-var index = require('./app_server/routes/index');
-var users = require('./app_server/routes/users');
+// var index = require('./app_server/routes/index');
+// var users = require('./app_server/routes/users');
 var routesApi = require('./app_api/routes/locations');
 
 var app = express();
@@ -40,7 +40,7 @@ fs.writeFile('public/angular/loc8r.min.js', uglified.code, function (err) {
 });
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -49,9 +49,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'app_client')));
 app.use(express.static(path.join(__dirname, 'dist')));
 
-app.use('/', index);
-app.use('/users', users);
+// app.use('/', index);
+// app.use('/users', users);
 app.use('/api', routesApi);
+
+// app.use(function(req, res) {
+//    res.sendfile(path.join(__dirname, 'app_client', 'index.html'));
+// });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -61,7 +65,7 @@ app.use(function(req, res, next) {
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function(err, req, res) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
