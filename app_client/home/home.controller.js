@@ -25,6 +25,7 @@
           locations: data.data
         };
       }).catch(function (e) {
+        console.log(e);
         vm.message = 'Sorry, something\'s gone wrong';
       });
     };

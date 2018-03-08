@@ -23,6 +23,7 @@ var appClientFiles = [
   'app_client/app.js',
   'app_client/home/home.controller.js',
   'app_client/about/about.controller.js',
+  'app_client/locationDetail/locationDetail.controller.js',
   'app_client/common/services/geolocation.service.js',
   'app_client/common/services/loc8rData.service.js',
   'app_client/common/filters/formatDistance.filter.js',
@@ -60,7 +61,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 app.use('/api', routesApi);
 
 app.use(function(req, res) {
-  res.sendfile(path.join(__dirname, 'app_client', 'index.html'));
+  res.sendFile(path.join(__dirname, 'app_client', 'index.html'));
 });
 
 // catch 404 and forward to error handler

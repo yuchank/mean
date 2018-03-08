@@ -21,6 +21,9 @@
         }
         return numDistance + unit;
       }
+      else if (distance === 0) {
+        return '0m';
+      } 
       else {
         return '?';
       }
