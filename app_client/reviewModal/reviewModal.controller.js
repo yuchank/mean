@@ -13,5 +13,10 @@
         $uibModalInstance.dismiss('cancel');
       }
     };
+
+    vm.onSubmit = function () {
+      console.log(vm.formData);
+      return false;
+    };
   };
 })();
