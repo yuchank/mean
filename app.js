@@ -1,14 +1,18 @@
-process.env.NODE_ENV = (process.env.NODE_ENV && (process.env.NODE_ENV).trim().toLowerCase()) ? 'production' : 'development';
+// process.env.NODE_ENV = (process.env.NODE_ENV && (process.env.NODE_ENV).trim().toLowerCase()) ? 'production' : 'development';
 
+require('dotenv').load();
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-require('./app_api/models/db');
 var uglifyJs = require('uglify-js');
 var fs = require('fs');
+var passport = require('passport');
+
+require('./app_api/models/db');
+require('./app_api/config/passport')
 
 // var index = require('./app_server/routes/index');
 // var users = require('./app_server/routes/users');
@@ -56,6 +60,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'app_client')));
 app.use(express.static(path.join(__dirname, 'dist')));
+
+app.use(passport.initialize());
 
 // app.use('/', index);
 // app.use('/users', users);

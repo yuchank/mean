@@ -30,3 +30,4 @@ var shutdown = (msg, callback) => {
 };
 
 require('./locations');
+require('./users');
