@@ -16,7 +16,7 @@ require('./app_api/config/passport')
 
 // var index = require('./app_server/routes/index');
 // var users = require('./app_server/routes/users');
-var routesApi = require('./app_api/routes/locations');
+var routesApi = require('./app_api/routes/index');
 
 var app = express();
 
