@@ -59,7 +59,8 @@
       register: register,
       login: login,
       logout: logout,
-      isLoggedIn: isLoggedIn
+      isLoggedIn: isLoggedIn,
+      currentUser: currentUser
     };
   };
 })();

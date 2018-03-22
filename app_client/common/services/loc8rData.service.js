@@ -3,8 +3,8 @@
     .module('loc8rApp')
     .service('loc8rData', loc8rData);
 
-  loc8rData.$inject = ['$http'];
-  function loc8rData($http) {
+  loc8rData.$inject = ['$http', 'authentication'];
+  function loc8rData($http, authentication) {
     var locationByCoords = function (lat, lng) {
       lat = 37.5693906;
       lng = 126.82793319999999;
@@ -16,7 +16,11 @@
     };
 
     var addReviewById = function (locationid, data) {
-      return $http.post('/api/locations/' + locationid + '/reviews', data);
+      return $http.post('/api/locations/' + locationid + '/reviews', data, {
+        headers: {
+          Authorization: 'Bearer ' + authentication.getToken()
+        }
+      });
     };
 
     return {
